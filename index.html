@@ -39,7 +39,62 @@
     padding: 1.2rem 3rem;
     background: rgba(10,14,23,0.85);
     backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);/* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(10,14,23,0.95);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    color: var(--teal);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+  }
+  nav ul {
+    list-style: none; display: flex; gap: 2rem;
+  }
+  nav ul a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--teal); }
+  .burger {
+    display: none;
+    flex-direction: column; justify-content: center; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+    z-index: 200;
+  }
+  .burger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--teal); border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    .burger { display: flex; }
+    nav ul {
+      display: none;
+      flex-direction: column;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10,14,23,0.98);
+      justify-content: center; align-items: center;
+      gap: 2.5rem; z-index: 150;
+    }
+    nav ul.open { display: flex; }
+    nav ul a { font-size: 1.2rem; }
+  }
   }
   .nav-logo {
     font-family: 'DM Mono', monospace;
@@ -424,7 +479,18 @@
 <nav>
   <span class="nav-logo">// Hamid</span>
   <ul>
-    <li><a href="#projets">Projets</a></li>
+    <li><a href="#projets">Projets</a></li><nav>
+  <span class="nav-logo">// hamid</span>
+  <button class="burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="nav-menu">
+    <li><a href="#projets" class="nav-link">Projets</a></li>
+    <li><a href="#competences" class="nav-link">Skills</a></li>
+    <li><a href="#formation" class="nav-link">Formation</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+</nav>
     <li><a href="#competences">Skills</a></li>
     <li><a href="#formation">Formation</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -694,6 +760,20 @@
 </footer>
 
 <script>
+  // Burger menu
+  const burger = document.getElementById('burger');
+  const navMenu = document.getElementById('nav-menu');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    navMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      burger.classList.remove('open');
+      navMenu.classList.remove('open');
+    });
+  });
+
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
